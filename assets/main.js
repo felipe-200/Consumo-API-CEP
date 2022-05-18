@@ -1,19 +1,24 @@
 'use strict';
 
+const endereco = document.getElementById('endereco');
+const bairro   = document.getElementById('bairro');
+const cidade   = document.getElementById('cidade'); 
+const estado   = document.getElementById('estado');
+
 /* <<<<<<<<<< Limpa  Formulário >>>>>>>>>*/
-const limparFormulario = (endereco) => {
-    document.getElementById('endereco').value = "";
-    document.getElementById('bairro').value = "";
-    document.getElementById('cidade').value = ""; 
-    document.getElementById('estado').value = "" ;
+const limparFormulario = () => {
+    endereco.value = "";
+    bairro.value   = "";
+    cidade.value   = ""; 
+    estado.value   = "";
 }
 
 /* <<<<<<<<<< Preenchendo o formulário >>>>>>>>>*/
-const preencherFormulario = (endereco) => {
-    document.getElementById('endereco').value = endereco.logradouro;
-    document.getElementById('bairro').value = endereco.bairro;
-    document.getElementById('cidade').value = endereco.localidade;
-    document.getElementById('estado').value = endereco.uf;
+const preencherFormulario = (endere) => {
+    endereco.value = endere.logradouro;
+    bairro.value = endere.bairro;
+    cidade.value = endere.localidade;
+    estado.value = endere.uf;
 }
 
 const eNumero = (numero) => /^[0-9]+$/.test(numero);
@@ -31,14 +36,14 @@ const pesquisarCep = async() => {
         const endereco = await dados.json();// pegando os dados e aplicando essa function json()
 
         // TRATANDO CEP NÃO ENCONTRADO
-        if (endereco.hasOwnProperty('erro')){
+        if (endereco.hasOwnProperty('erro') || !endereco){
             document.getElementById('endereco').value = "CEP não encontrado";
-        } else {
-            preencherFormulario(endereco);// Vou mandar pro método que vai preencher o form
+            return
         }
-    } else {
-        document.getElementById('endereco').value = "CEP incorreto!";
+        preencherFormulario(endereco);// Vou mandar pro método que vai preencher o form
+        return
     }
+    document.getElementById('endereco').value = "CEP incorreto!";
 } 
 
 document.getElementById('cep')
